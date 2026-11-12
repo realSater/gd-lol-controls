@@ -1,0 +1,17 @@
+# build output
+dist/
+obj/
+tests/bin/
+*.exe
+*.dll
+*.pdb
+*.obj
+*.exp
+*.lib
+*.ico
+
+# created when the app runs
+config.ini
+config.ini.tmp
+logs/
+backups/
