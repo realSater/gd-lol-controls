@@ -1,4 +1,4 @@
-![GD LoL Controls — MOBA-style movement for Grim Dawn](assets/gd-lol-controls-banner.png)
+![GD LoL Controls — MOBA-style movement for Grim Dawn](gd-lol-controls-banner.png)
 
 # GD LoL Controls
 
