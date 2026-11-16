@@ -48,17 +48,70 @@ The layout is written into Grim Dawn's own `keybindings.txt` (`Documents\My Game
 
 Hold **A** (or press it once in toggle mode): an enemy in range is attacked and kept until it dies, then the next one. Your own clicks always come first. Settings → Auto attack has the range, which enemy first, hold or toggle, and the optional extras. The game no longer receives A (in the stock game A is "move to cursor").
 
-## Game data (GDLoLHook.dll)
+## Mouse buttons and interactions
 
-For exact and instant results the app loads a small helper, `GDLoLHook.dll`, into Grim Dawn while both run.
+GD LoL Controls adds MOBA-style right-click movement without removing the game's original left-click functionality.
 
-- **What it reads:** where you and the characters near you are, their health, and whether they are friend or foe.
-- **What it does:** the same actions you do with the mouse and keyboard (attack this enemy, walk to this point, use this hotbar slot, drink a potion), so the auto attack and the walk after a cast need no cursor movement.
-- **What it never does:** change stats, items, experience, drops, damage or saves. It patches no game code: it calls the game's own named functions and hooks one call of the game's main loop through its import table.
-- **Fallback:** if it cannot load (game running as administrator, antivirus, a game update that renamed functions), the app reads the screen instead and says so in the log. Each feature checks that the game really acted (the character moved, the potion went on cooldown) and switches back to the mouse/keyboard way after three misses.
-- **Switch it off:** Settings → Auto attack → Enemy detection → *screen*, and the "game data" options in the other tabs.
+- **Right-click:** Mirrors Grim Dawn's normal left-click behavior for moving, attacking, and other actions that the game handles through left-click.
+- **Left-click:** Still works normally. You can continue using it to pick up loot, interact with NPCs and objects, attack, and move as Grim Dawn allows.
+- **Genuine right-click:** If you need the game's original right-click action, configure a passthrough key under **Settings → Advanced → Hold this key for a genuine right-click**. Hold that key while right-clicking.
+- **Outside Grim Dawn:** Right-click behaves normally in Windows and other applications.
+- **Customization:** Disable right-click mirroring entirely under **Settings → Advanced → Right mouse button in Grim Dawn → off**.
 
-Some antivirus programs dislike any tool that loads into another program, and the files are not code-signed. Windows SmartScreen may warn on first start ("More info" → "Run anyway"). The full source is here; build it yourself if you prefer.
+**Important:** Right-click is not a dedicated movement-only command. It mirrors left-click, so clicking directly on an enemy or interactive object can still trigger the game's normal action.
+
+## Game data and screen-reading modes
+
+GD LoL Controls supports two ways of detecting what happens in Grim Dawn.
+
+### Game data mode (GDLoLHook.dll)
+
+For precise targeting and movement tracking, the application can load `GDLoLHook.dll` into the running game.
+
+The helper can read character positions, health, nearby entities, and other gameplay information. Enabled features can also use the game's own action functions for movement, attacks, skills, and potions.
+
+This avoids some of the limitations of visual detection, including estimating enemy positions from on-screen health bars.
+
+The helper does not intentionally modify character stats, inventory, experience, damage, drops, or save files. However, it does interact with the game's running process, and some security products may flag this behavior.
+
+### Screen-reading mode
+
+If you prefer not to load a helper DLL into Grim Dawn, you can use the application's screen-reading and keyboard/mouse input methods.
+
+To disable all game-data-dependent features:
+
+1. Open **Settings → Auto attack**.
+2. Change **Enemy detection** to **screen**.
+3. Disable **Kite steps and attack-move by the game's own move command**.
+4. Disable **Smart cast**.
+5. Disable **Drink through the game's own potion slot**.
+6. Open **Settings → Movement resume** and disable **Use game data: the exact destination from the game and its own move command**.
+7. Save your settings.
+
+When no feature requests game data, the application stops requesting the helper and unloads it from the game.
+
+**Screen mode limitations:**
+
+- Enemy detection relies on visual information, such as health bars, rather than exact internal game positions.
+- Some actions may be less precise than their game-data equivalents.
+- Borderless or windowed mode is recommended because screen capture is required.
+- Calibration may be necessary for reliable movement tracking and cursor recognition.
+- Certain game-data-only functions, including smart cast targeting, will no longer be available.
+
+Screen mode does not disable the application's ordinary mouse and keyboard input handling. It is an alternative to the in-game helper, not a guarantee of compatibility with every antivirus or anti-cheat system.
+
+### Antivirus and Windows SmartScreen
+
+GD LoL Controls is an independent, open-source project, and its executables are not currently code-signed.
+
+Windows SmartScreen may display an unknown-publisher warning, and some antivirus products may flag the helper DLL because it is designed to load into another process.
+
+A warning does not automatically mean a file is malicious, but it should not be ignored without verification.
+
+You can inspect the source in `src/` and `hook/`, build the project yourself using `build.ps1`, or choose screen-reading mode.
+
+The application does not require an internet connection and is designed to keep its settings and logs locally.
+
 
 ## Settings
 
